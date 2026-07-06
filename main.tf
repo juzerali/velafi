@@ -15,7 +15,7 @@ provider "aws" {
 terraform {
   backend "s3" {
     bucket = "velafi-candidate-tfstate-bucket"
-    key = "assessment.tfstate"
+    key    = "assessment.tfstate"
     region = "us-east-2"
   }
 }
