@@ -1,7 +1,7 @@
 resource "aws_db_instance" "postgres_db" {
   identifier            = "my-postgres-db"
   engine                = "postgres"
-  engine_version        = "16.1"
+  engine_version        = "18.4"
   instance_class        = "db.t3.micro"
   allocated_storage     = 20
   max_allocated_storage = 100
@@ -15,8 +15,9 @@ resource "aws_db_instance" "postgres_db" {
   parameter_group_name   = aws_db_parameter_group.default.name
 
   publicly_accessible = false
-  skip_final_snapshot = true # Set to false for production to ensure backup before destruction
-
+  skip_final_snapshot = true  # Set to false for production to ensure backup before destruction
+  deletion_protection = false # TODO: Set to true in production
+  # iops = 10000 #TODO: Add appropriate value for high scale applications
   tags = {
     Environment = "Dev"
   }
@@ -47,10 +48,10 @@ resource "aws_security_group_rule" "db_traffic" {
   to_port           = 5432
   protocol          = "tcp"
   cidr_blocks       = [aws_subnet.private1.cidr_block, aws_subnet.private2.cidr_block]
-  security_group_id = "sg-123456"
+  security_group_id = aws_security_group.db_security.id
 }
 
 resource "aws_db_parameter_group" "default" {
   name   = "rds-pg"
-  family = "postgres16"
+  family = "postgres18"
 }

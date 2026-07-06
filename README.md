@@ -28,3 +28,6 @@ Disabled for stability
 
 #### Deletion protection
 Not added due to experimental use. Always add in production.
+
+#### Engine version
+18.4, last known stable version
